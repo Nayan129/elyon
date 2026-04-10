@@ -9,4 +9,5 @@ if (!process.env.MONGO_URI) {
 // writing all secrets here for security and centralization
 export const config = {
   MONGO_URI: process.env.MONGO_URI,
+  JWT_SECRET: process.env.JWT_SECRET,
 };
