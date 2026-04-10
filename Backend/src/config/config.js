@@ -6,6 +6,10 @@ if (!process.env.MONGO_URI) {
   throw new Error("MONGO_URI is not defined in environmental variable");
 }
 
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET not defined in environmental variable");
+}
+
 // writing all secrets here for security and centralization
 export const config = {
   MONGO_URI: process.env.MONGO_URI,
