@@ -40,29 +40,25 @@ const Register = () => {
     <div className="min-h-screen bg-[#0e0e0e] text-[#e5e2e1] font-sans selection:bg-[#FFD700] selection:text-[#131313] flex flex-col lg:flex-row">
 
       {/* Split Screen - Left Image Section (Hidden on mobile, visible on lg screens) */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-[#131313] items-center justify-center overflow-hidden border-r border-[#1c1b1b]">
+      <div className="relative w-full md:w-1/2 h-[45vh] md:h-screen bg-neutral-900 border-r border-dark-surface/30">
         <img
-          src="/snitch_editorial.png"
-          alt="Snitch Fashion Editorial"
-          className="absolute inset-0 w-full h-full object-cover opacity-60 mix-blend-luminosity hover:scale-105 transition-transform duration-[20s] ease-out"
+          src="/evyon_editorial.png"
+          alt="Evyon Editorial"
+          className="absolute inset-0 w-full h-full object-cover filter grayscale contrast-125 brightness-75 transition-all duration-700 hover:brightness-90"
         />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent md:bg-gradient-to-r" />
 
-        {/* Gradient overlays to merge image nicely into the dark background */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0e0e0e] via-transparent to-transparent opacity-90"></div>
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0e0e0e]/50 via-transparent to-[#0e0e0e] opacity-90"></div>
+        <div className="absolute top-12 left-10 z-10">
+          <h1 className="text-gold font-brand text-2xl font-bold tracking-[0.2em]">EVYON.</h1>
+        </div>
 
-        <div className="relative z-10 p-16 flex flex-col h-full justify-between w-full max-w-2xl">
-          <h2 className="text-[#FFD700] text-xl font-bold tracking-widest uppercase">Snitch.</h2>
-
-          <div className="mt-auto">
-            <p className="text-5xl lg:text-6xl font-bold tracking-tighter leading-[1.1] text-white mb-6">
-              Define your <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#e9c400] to-[#ffd700]">aesthetic.</span>
-            </p>
-            <p className="text-[#d0c6ab] max-w-md text-lg leading-relaxed">
-              Join the exclusive movement of creators and brands redefining the modern fashion landscape.
-            </p>
-          </div>
+        <div className="absolute bottom-12 left-10 right-10 z-10 max-w-sm">
+          <h2 className="text-white font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight drop-shadow-2xl">
+            Define your <span className="text-gold italic">aesthetic.</span>
+          </h2>
+          <p className="text-neutral-300 mt-4 font-body tracking-wider text-sm md:text-base opacity-80">
+            Join the exclusive movement of creators and brands redefining the modern fashion landscape.
+          </p>
         </div>
       </div>
 
@@ -70,7 +66,7 @@ const Register = () => {
       <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12 lg:p-16 min-h-screen overflow-y-auto z-10 bg-[#0e0e0e]">
         <div className="w-full max-w-md bg-[#131313] lg:bg-transparent p-10 md:p-14 lg:p-6 rounded-2xl lg:rounded-none shadow-[0_24px_48px_-12px_rgba(0,0,0,0.5)] lg:shadow-none">
           <div className="mb-12">
-            <h2 className="text-sm uppercase tracking-widest text-[#FFD700] font-medium mb-3">Welcome to Snitch</h2>
+            <h2 className="text-sm uppercase tracking-widest text-[#FFD700] font-medium mb-3">Welcome to Evyon</h2>
             <h1 className="text-4xl md:text-5xl font-bold tracking-tighter text-white">Elevate Your Style</h1>
           </div>
 

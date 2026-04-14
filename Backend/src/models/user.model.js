@@ -1,45 +1,37 @@
 import mongoose from "mongoose";
-import bcryptjs from "bcryptjs";
-// this schema has all required things for register/login
-const UserSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: [true, "email is required"],
-    unique: [true, "email should be unique"],
-  },
-  contact: {
-    type: String,
-    required: [true, "contact is required"],
-    unique: [true, "mobile number should be unique"],
-  },
+import bcrypt from "bcryptjs";
+
+const userSchema = new mongoose.Schema({
+  email: { type: String, required: true, unique: true },
+  contact: { type: String, required: false },
   password: {
     type: String,
-    required: [true, "password is required"],
+    required: function () {
+      return !this.googleId;
+    },
   },
-  fullname: {
-    type: String,
-    required: true,
-  },
+  fullname: { type: String, required: true },
   role: {
     type: String,
     enum: ["buyer", "seller"],
     default: "buyer",
   },
+  googleId: {
+    type: String,
+  },
 });
 
-// this pre check password modified or not before saving to DB
-UserSchema.pre("save", async function () {
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
-  const hash = await bcryptjs.hash(this.password, 10);
+  const hash = await bcrypt.hash(this.password, 10);
   this.password = hash;
 });
 
-// compare DB stored password with user written password
-UserSchema.methods.comparePassword = async function (password) {
-  return await bcryptjs.compare(password, this.password);
+userSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
 };
 
-const userModel = mongoose.model("user", UserSchema);
+const userModel = mongoose.model("user", userSchema);
 
 export default userModel;

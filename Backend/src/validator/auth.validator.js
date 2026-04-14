@@ -5,25 +5,31 @@ function validateRequest(req, res, next) {
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
+
   next();
 }
 
 export const validateRegisterUser = [
-  body("email").isEmail().withMessage("invalid email format"),
+  body("email").isEmail().withMessage("Invalid email format"),
   body("contact")
     .notEmpty()
-    .withMessage("contact is required")
+    .withMessage("Contact is required")
     .matches(/^\d{10}$/)
-    .withMessage("contact must be 10 digit numnber"),
+    .withMessage("Contact must be a 10-digit number"),
   body("password")
     .isLength({ min: 6 })
-    .withMessage("password must be atleast 6 charecters long"),
+    .withMessage("Password must be at least 6 characters long"),
   body("fullname")
     .notEmpty()
-    .withMessage("fullname is required")
+    .withMessage("Full name is required")
     .isLength({ min: 3 })
-    .withMessage("full name must be at least 3 charecter long"),
+    .withMessage("Full name must be at least 3 characters long"),
   body("isSeller").isBoolean().withMessage("isSeller must be a boolean value"),
+  validateRequest,
+];
 
+export const validateLoginUser = [
+  body("email").isEmail().withMessage("Invalid email format"),
+  body("password").notEmpty().withMessage("Password is required"),
   validateRequest,
 ];
