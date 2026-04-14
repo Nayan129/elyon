@@ -12,10 +12,9 @@ async function sendTokenResponse(user, res) {
     { expiresIn: "7d" },
   );
 
-  res.cookies("token", token);
+  res.cookie("token", token);
 
   res.status(200).json({
-    message,
     success: true,
     user: {
       id: user._id,
@@ -51,7 +50,7 @@ export const register = async (req, res) => {
 
     await sendTokenResponse(user, res, "User registered successfully");
   } catch (error) {
-    console.log(error);
+    console.log("REGISTER ERROR:", error.message);
     return res.status(500).json({
       message: "server error",
     });
