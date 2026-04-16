@@ -31,3 +31,7 @@ export async function createProduct(req, res) {
     product,
   });
 }
+
+// export async function getProducts(req, res) {
+
+// }
