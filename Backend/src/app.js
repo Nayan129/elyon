@@ -22,6 +22,7 @@ app.use(
   }),
 );
 
+// passport library for sign in with google feature 
 app.use(passport.initialize());
 
 passport.use(

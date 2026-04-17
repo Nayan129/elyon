@@ -1,5 +1,3 @@
-import React from 'react'
-
 const ContinueWithGoogle = () => {
   return (
     <a href="/api/auth/google"
