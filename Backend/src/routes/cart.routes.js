@@ -6,7 +6,7 @@ import { addToCart } from "../controllers/cart.controller.js";
 const router = express.Router();
 
 router.post(
-  "/add/:productId/:varientId",
+  "/add/:productId/:variantId",
   authenticateUser,
   validateAddToCart,
   addToCart,

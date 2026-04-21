@@ -12,7 +12,7 @@ const validateRequest = (req, res, next) => {
 
 export const validateAddToCart = [
   param("productId").isMongoId().withMessage("Invalid product ID"),
-  param("varientId").optional().isMongoId().withMessage("Invalid Varient ID"),
+  param("variantId").optional().isMongoId().withMessage("Invalid Variant ID"),
   body("quantity")
     .optional()
     .isInt({ min: 1 })

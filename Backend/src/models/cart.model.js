@@ -14,9 +14,9 @@ const cartSchema = new mongoose.Schema({
         requird: true,
         ref: "product",
       },
-      varient: {
+      variant: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "varient",
+        ref: "variant",
       },
       quantity: {
         type: Number,
