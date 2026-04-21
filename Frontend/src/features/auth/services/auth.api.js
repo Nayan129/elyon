@@ -26,3 +26,10 @@ export async function login({ email, password }) {
 
     return response.data
 }
+
+// get current user
+export async function getMe() {
+    const response = await authApiInstance.get("/me")
+
+    return response.data
+}
