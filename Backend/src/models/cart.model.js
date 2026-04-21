@@ -1,4 +1,5 @@
 import mongoose, { mongo } from "mongoose";
+import priceSchema from "./price.schema.js";
 
 const cartSchema = new mongoose.Schema({
   user: {
@@ -22,16 +23,13 @@ const cartSchema = new mongoose.Schema({
         default: 1,
       },
       price: {
-        amount: {
-          type: Number,
-          required: true,
-        },
-        currency: {
-          type: String,
-          enum: ["USD", "EUR", "GBP", "JPY", "INR"],
-          default: "INR",
-        },
+        type: priceSchema,
+        required: true,
       },
     },
   ],
 });
+
+const cartModel = mongoose.model("cart", cartSchema);
+
+export default cartModel;

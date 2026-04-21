@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const priceScema = new mongoose.Schema(
+const priceSchema = new mongoose.Schema(
   {
     amount: {
       type: Number,
@@ -18,4 +18,4 @@ const priceScema = new mongoose.Schema(
   },
 );
 
-export default priceScema;
+export default priceSchema;
