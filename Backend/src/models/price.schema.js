@@ -13,8 +13,8 @@ const priceSchema = new mongoose.Schema(
     },
   },
   {
-    _v: false,
     _id: false,
+    _v: false,
   },
 );
 

@@ -23,7 +23,6 @@ app.use(
   }),
 );
 
-// passport library for sign in with google feature
 app.use(passport.initialize());
 
 passport.use(
@@ -46,5 +45,4 @@ app.get("/", (_req, res) => {
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/cart", cartRouter);
-
 export default app;

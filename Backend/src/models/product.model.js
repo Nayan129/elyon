@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
 import priceSchema from "./price.schema.js";
+
 const productSchema = new mongoose.Schema(
   {
     title: {
@@ -46,7 +47,7 @@ const productSchema = new mongoose.Schema(
           of: String,
         },
         price: {
-          type:priceSchema,
+          type: priceSchema,
         },
       },
     ],
