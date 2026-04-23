@@ -1,14 +1,19 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router';
 import { useProduct } from '../hooks/useProduct';
+import { useCart } from '../../cart/hook/useCart';
 
 const ProductDetail = () => {
     const { productId } = useParams();
-    const [ product, setProduct ] = useState(null);
-    const [ selectedImage, setSelectedImage ] = useState(0);
-    const [ selectedAttributes, setSelectedAttributes ] = useState({});
+    const [product, setProduct] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(0);
+    const [selectedAttributes, setSelectedAttributes] = useState({});
     const navigate = useNavigate();
     const { handleGetProductById } = useProduct();
+    const { handleAddItem } = useCart()
+
+
+
 
     async function fetchProductDetails() {
         try {
@@ -22,13 +27,13 @@ const ProductDetail = () => {
 
     useEffect(() => {
         fetchProductDetails();
-    }, [ productId ]);
+    }, [productId]);
 
     useEffect(() => {
         if (product?.variants?.length > 0) {
             setSelectedAttributes(product.variants[0].attributes || {});
         }
-    }, [ product ]);
+    }, [product]);
 
     const activeVariant = useMemo(() => {
         if (!product?.variants || product.variants.length === 0) return null;
@@ -42,6 +47,9 @@ const ProductDetail = () => {
             return vKeys.length === sKeys.length && isMatch;
         });
     }, [product, selectedAttributes]);
+
+
+    console.log({ product, activeVariant })
 
     const availableAttributes = useMemo(() => {
         if (!product?.variants) return {};
@@ -66,12 +74,12 @@ const ProductDetail = () => {
 
     const handleAttributeChange = (attrName, value) => {
         const newAttrs = { ...selectedAttributes, [attrName]: value };
-        
+
         // Find if an exact match exists for this combination
         const exactMatch = product.variants.find(v => {
             const vAttrs = v.attributes || {};
             return Object.keys(newAttrs).every(k => newAttrs[k] === vAttrs[k]) &&
-                   Object.keys(vAttrs).every(k => newAttrs[k] === vAttrs[k]);
+                Object.keys(vAttrs).every(k => newAttrs[k] === vAttrs[k]);
         });
 
         if (exactMatch) {
@@ -98,14 +106,14 @@ const ProductDetail = () => {
     }
 
     console.log(product)
-    
-    // Fallbacks
-    const displayImages = (activeVariant?.images && activeVariant.images.length > 0) 
-        ? activeVariant.images 
-        : (product.images && product.images.length > 0 ? product.images : [ { url: '/snitch_editorial_warm.png' } ]);
 
-    const displayPrice = activeVariant?.price?.amount 
-        ? activeVariant.price 
+    // Fallbacks
+    const displayImages = (activeVariant?.images && activeVariant.images.length > 0)
+        ? activeVariant.images
+        : (product.images && product.images.length > 0 ? product.images : [{ url: '/snitch_editorial_warm.png' }]);
+
+    const displayPrice = activeVariant?.price?.amount
+        ? activeVariant.price
         : product.price;
 
     return (
@@ -120,22 +128,6 @@ const ProductDetail = () => {
                 className="min-h-screen selection:bg-[#C9A96E]/30 pb-24"
                 style={{ backgroundColor: '#fbf9f6', fontFamily: "'Inter', sans-serif" }}
             >
-                {/* ── Navbar ── */}
-                <nav className="px-8 lg:px-16 xl:px-24 pt-10 pb-6 flex items-center justify-between border-b" style={{ borderColor: '#e4e2df' }}>
-                    <Link to="/"
-                        className="text-sm font-medium tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
-                        style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A96E' }}
-                    >
-                        Evyon.
-                    </Link>
-                    <button
-                        onClick={() => navigate(-1)}
-                        className="text-[10px] uppercase tracking-[0.2em] font-medium transition-colors hover:text-[#C9A96E] cursor-pointer"
-                        style={{ color: '#7A6E63' }}
-                    >
-                        Return to Archive
-                    </button>
-                </nav>
 
                 <div className="max-w-7xl mx-auto px-8 lg:px-16 xl:px-24 pt-12 lg:pt-20">
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
@@ -164,7 +156,7 @@ const ProductDetail = () => {
                             {/* Main Image */}
                             <div className="relative w-full aspect-4/5 overflow-hidden group" style={{ backgroundColor: '#f5f3f0' }}>
                                 <img
-                                    src={displayImages[ selectedImage ]?.url || displayImages[ 0 ].url}
+                                    src={displayImages[selectedImage]?.url || displayImages[0].url}
                                     alt={product.title}
                                     className="w-full h-full object-cover transition-opacity duration-500"
 
@@ -276,12 +268,19 @@ const ProductDetail = () => {
                                         e.currentTarget.style.backgroundColor = '#1b1c1a';
                                         e.currentTarget.style.color = '#fbf9f6';
                                     }}
+                                    onClick={() => {
+                                        handleAddItem({
+                                            productId: product._id,
+                                            variantId: activeVariant._id
+                                        })
+                                        console.log(handleAddItem)
+                                    }}
                                 >
                                     Add to Cart
                                 </button>
 
                                 <button
-                                    className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 border hover:cursor-pointer hover:bg-[]"
+                                    className="w-full py-4 text-[11px] uppercase tracking-[0.25em] font-medium transition-all duration-300 border"
                                     style={{
                                         backgroundColor: 'transparent',
                                         borderColor: '#d0c5b5',
@@ -289,7 +288,7 @@ const ProductDetail = () => {
                                         fontFamily: "'Inter', sans-serif"
                                     }}
                                     onMouseEnter={e => {
-                                        e.currentTarget.style.borderColor = '#1b1c1a';
+                                        e.currentTarget.style.borderColor = '#C9A96E';
                                     }}
                                     onMouseLeave={e => {
                                         e.currentTarget.style.borderColor = '#d0c5b5';

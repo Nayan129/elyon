@@ -12,10 +12,6 @@ import {
 
 const router = express.Router();
 
-/**
- * @route POST /api/cart/add/:productId/:variantId
- * /
-
 router.post(
   "/add/:productId/:variantId",
   authenticateUser,
