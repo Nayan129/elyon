@@ -99,7 +99,7 @@ const Cart = () => {
               className="text-sm font-medium tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
               style={{ fontFamily: "'Cormorant Garamond', serif", color: tokens.primary }}
             >
-              Snitch.
+              Evyon.
             </Link>
             <button
               onClick={() => navigate(-1)}
