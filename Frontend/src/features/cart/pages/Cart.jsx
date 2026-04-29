@@ -64,10 +64,10 @@ const Cart = () => {
 
 
     const options = {
-      key: "rzp_test_ShNSkpxt3emQVJ",
+      key: "rzp_live_SioFvnpUEER78D",
       amount: order.amount, // Amount in paise
       currency: order.currency,
-      name: "Snitch",
+      name: "Evyon",
       description: "Test Transaction",
       order_id: order.id, // Generate order_id on server
       handler: async (response) => {
