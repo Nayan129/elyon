@@ -7,6 +7,7 @@ import { getCartDetails } from "../dao/cart.dao.js";
 import paymentModel from "../models/payment.model.js";
 import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
 import { config } from "../config/config.js";
+import items from "razorpay/dist/types/items.js";
 
 export const addToCart = async (req, res) => {
   const { productId, variantId } = req.params;
@@ -103,6 +104,7 @@ export const getCart = async (req, res) => {
   });
 };
 
+// increment product in cart (+1)
 export const incrementCartItemQuantity = async (req, res) => {
   const { productId, variantId } = req.params;
 
@@ -155,6 +157,106 @@ export const incrementCartItemQuantity = async (req, res) => {
 
   return res.status(200).json({
     message: "Cart item quantity incremented successfully",
+    success: true,
+  });
+};
+
+// decrement product from cart (-1)
+export const decrementCartQuantity = async (req, res) => {
+  const { productId, variantId } = req.params;
+
+  const cart = await cartModel.findOne({ user: req.user._id });
+
+  if (!cart) {
+    return res.status(404).json({
+      message: "Cart not found",
+      success: false,
+    });
+  }
+
+  const item = cart.items.find(
+    (item) =>
+      item.product.toString() === productId &&
+      item.variant?.toString() === variantId,
+  );
+
+  if (!item) {
+    return res.status(404).json({
+      message: "Item not found in cart",
+      success: false,
+    });
+  }
+
+  if (item.quantity === 0) {
+    // remove item
+    await cartModel.findOneAndUpdate(
+      { user: req.user._id },
+      {
+        $pull: {
+          items: {
+            product: productId,
+            variant: variantId,
+          },
+        },
+      },
+      { new: true },
+    );
+
+    return res.status(200).json({
+      message: "Item removed from cart",
+      success: true,
+    });
+  }
+
+  // decrement quantity
+  await cartModel.findOneAndUpdate(
+    {
+      user: req.user._id,
+      "items.product": productId,
+      "items.variant": variantId,
+    },
+    {
+      $inc: { "items.$.quantity": -1 },
+    },
+    { new: true },
+  );
+
+  return res.status(200).json({
+    message: "Cart item quantity decrement successfully",
+    success: true,
+  });
+};
+
+// remove item from cart fully
+export const removeItemFromCart = async (req, res) => {
+  const { productId, variantId } = req.params;
+
+  const updatedCart = await cartModel.findOneAndUpdate(
+    {
+      user: req.user._id,
+      "items.product": productId,
+      "items.variant": variantId,
+    },
+    {
+      $pull: {
+        items: {
+          product: productId,
+          variant: variantId,
+        },
+      },
+    },
+    { new: true },
+  );
+
+  if (!updatedCart) {
+    return res.status(404).json({
+      message: "Cart or item not found",
+      success: false,
+    });
+  }
+
+  return res.status(200).json({
+    message: "Item removed from cart successfully",
     success: true,
   });
 };

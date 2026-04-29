@@ -114,7 +114,7 @@ const Home = () => {
             className="text-[10px] uppercase tracking-[0.35em]"
             style={{ fontFamily: "'Cormorant Garamond', serif", color: '#C9A96E' }}
           >
-            Snitch. © {new Date().getFullYear()}
+            Evyon. © {new Date().getFullYear()}
           </span>
         </footer>
       </div>
