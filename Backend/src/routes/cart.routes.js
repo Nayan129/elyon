@@ -3,12 +3,14 @@ import { authenticateUser } from "../middlewares/auth.middleware.js";
 import {
   validateAddToCart,
   validateIncrementCartItemQuantity,
+  validateDecrementCartItemQuantity,
 } from "../validator/cart.validator.js";
 import {
   addToCart,
   createOrderController,
   getCart,
   incrementCartItemQuantity,
+  decrementCartItemQuantity,
   verifyOrderController,
 } from "../controllers/cart.controller.js";
 
@@ -37,6 +39,16 @@ router.patch(
   authenticateUser,
   validateIncrementCartItemQuantity,
   incrementCartItemQuantity,
+);
+
+/**
+ * @route PATCH /api/cart/quantity/decrement/:productId/:variantId
+ */
+router.patch(
+  "/quantity/decrement/:productId/:variantId",
+  authenticateUser,
+  validateDecrementCartItemQuantity,
+  decrementCartItemQuantity,
 );
 
 /**

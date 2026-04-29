@@ -23,7 +23,7 @@ const tokens = {
 
 const Cart = () => {
   const cart = useSelector(state => state.cart)
-  const { handleGetCart, handleIncrementCartItem, handleCreateCartOrder, handleVerifyCartOrder } = useCart()
+  const { handleGetCart, handleIncrementCartItem, handleDecrementCartItem, handleCreateCartOrder, handleVerifyCartOrder } = useCart()
   const navigate = useNavigate()
   const { error, isLoading, Razorpay } = useRazorpay();
   const user = useSelector(state => state.user)
@@ -36,12 +36,6 @@ const Cart = () => {
   }, [])
 
 
-  const changeQty = (id, delta) => {
-    setQuantities(prev => ({
-      ...prev,
-      [id]: Math.max(1, (prev[id] ?? 1) + delta),
-    }))
-  }
   /* ─── Helpers ─── */
   const getVariantDetails = (product, variantId) => {
     if (!product?.variants || !variantId) return null
@@ -114,7 +108,7 @@ const Cart = () => {
               className="text-sm font-medium tracking-[0.35em] uppercase hover:opacity-80 transition-opacity"
               style={{ fontFamily: "'Cormorant Garamond', serif", color: tokens.primary }}
             >
-              Snitch.
+              Evyon.
             </Link>
             <button
               onClick={() => navigate(-1)}
@@ -319,7 +313,7 @@ const Cart = () => {
                           >
                             <button
                               id={`qty-dec-${_id}`}
-                              onClick={() => changeQty(_id, -1)}
+                              onClick={() => handleDecrementCartItem({ productId: _id, variantId })}
                               className="w-9 h-9 flex items-center justify-center text-sm font-light transition-colors hover:opacity-60"
                               style={{ color: tokens.onSurface, borderRight: `1px solid ${tokens.outlineVariant}` }}
                               aria-label="Decrease quantity"
@@ -348,6 +342,7 @@ const Cart = () => {
                             id={`remove-${_id}`}
                             className="text-[10px] uppercase tracking-[0.22em] font-medium transition-all duration-200 hover:underline hover:opacity-70"
                             style={{ color: tokens.muted }}
+                            onClick={() => console.log("remove button clicked")}
                           >
                             Remove
                           </button>

@@ -7,7 +7,7 @@ import { getCartDetails } from "../dao/cart.dao.js";
 import paymentModel from "../models/payment.model.js";
 import { validatePaymentVerification } from "razorpay/dist/utils/razorpay-utils.js";
 import { config } from "../config/config.js";
-import items from "razorpay/dist/types/items.js";
+import Razorpay from "razorpay";
 
 export const addToCart = async (req, res) => {
   const { productId, variantId } = req.params;
@@ -162,7 +162,7 @@ export const incrementCartItemQuantity = async (req, res) => {
 };
 
 // decrement product from cart (-1)
-export const decrementCartQuantity = async (req, res) => {
+export const decrementCartItemQuantity = async (req, res) => {
   const { productId, variantId } = req.params;
 
   const cart = await cartModel.findOne({ user: req.user._id });
@@ -187,15 +187,18 @@ export const decrementCartQuantity = async (req, res) => {
     });
   }
 
-  if (item.quantity === 0) {
+  const productObjectId = new mongoose.Types.ObjectId(productId);
+  const variantObjectId = new mongoose.Types.ObjectId(variantId);
+
+  if (item.quantity === 1) {
     // remove item
     await cartModel.findOneAndUpdate(
       { user: req.user._id },
       {
         $pull: {
           items: {
-            product: productId,
-            variant: variantId,
+            product: productObjectId,
+            variant: variantObjectId,
           },
         },
       },
@@ -212,8 +215,8 @@ export const decrementCartQuantity = async (req, res) => {
   await cartModel.findOneAndUpdate(
     {
       user: req.user._id,
-      "items.product": productId,
-      "items.variant": variantId,
+      "items.product": productObjectId,
+      "items.variant": variantObjectId,
     },
     {
       $inc: { "items.$.quantity": -1 },
